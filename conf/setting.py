@@ -19,6 +19,8 @@ CONF_PATH = os.path.join(BASE_PATH, "conf")
 DB_PATH = os.path.join(BASE_PATH, "db")
 ADMIN_DB_PATH = os.path.join(DB_PATH, "admin")
 STUDENTS_DB_PATH = os.path.join(DB_PATH, "students")
+TEACHERS_DB_PATH = os.path.join(DB_PATH, "teachers")
+COURSES_DB_PATH = os.path.join(DB_PATH, "courses")
 
 
 # 日志路径
