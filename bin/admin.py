@@ -10,7 +10,7 @@ import pickle
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from conf import setting
+from conf import settings
 from lib import core
 
 
@@ -31,7 +31,7 @@ def create_teacher(admin_obj):
         teacher_list.append(obj)
 
     # 如果文件已经存在，则把原文件添加到新添加的teacher_list中，并重新写入
-    path = os.path.join(setting.TEACHERS_DB_PATH, "teacher_list")
+    path = os.path.join(settings.TEACHERS_DB_PATH, "teacher_list")
     if os.path.exists(path):
         exists_list = pickle.load(open(path, "rb"))
         teacher_list.extend(exists_list)
@@ -48,7 +48,7 @@ def create_course(admin_obj):
     # course_list = []
     # while True:
     #     course_name = input("请输入课程名：")
-    path = os.path.join(setting.TEACHERS_DB_PATH, "teacher_list")
+    path = os.path.join(settings.TEACHERS_DB_PATH, "teacher_list")
     teacher_list = pickle.load(open(path, "rb"))
     for index, item in enumerate(teacher_list, 1):
         print(index, item.name, item.age, item.create_admin.username, item.create_time)
@@ -64,11 +64,11 @@ def create_course(admin_obj):
         course_list.append(obj)
 
     # 如果文件已经存在，则把原文件添加到新添加的teacher_list中，并重新写入
-    path = os.path.join(setting.COURSES_DB_PATH, "course_list")
+    path = os.path.join(settings.COURSES_DB_PATH, "course_list")
     if os.path.exists(path):
         exists_list = pickle.load(open(path, "rb"))
         course_list.extend(exists_list)
-    pickle.dump(teacher_list, open(path, "wb"))
+    pickle.dump(course_list, open(path, "wb"))
     print("添加成功")
 
 
@@ -80,7 +80,7 @@ def login(user, pwd):
     :param pwd:
     :return:
     """
-    path = os.path.join(setting.ADMIN_DB_PATH, user)
+    path = os.path.join(settings.ADMIN_DB_PATH, user)
     result = os.path.exists(path)
     if result:
         admin_obj = pickle.load(open(path, "rb"))
@@ -95,8 +95,10 @@ def login(user, pwd):
                 else:
                     break
         else:
+            # 密码错误
             return 0
     else:
+        # 用户不存在
         return 1
 
 
@@ -120,7 +122,7 @@ def main():
     主函数
     :return: None
     """
-    inp = input("1.用户登录；2.用户注册：\n>>>")
+    inp = input("1.管理员登录；2.管理员注册：\n>>>")
     user = input("请输入账户：")
     pwd = input("请输入密码：")
 
