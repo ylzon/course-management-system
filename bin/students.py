@@ -20,8 +20,8 @@ def course_info(student_obj):
     :param student_obj:
     :return:
     """
-    for item in student_obj.course_list:
-        print(item.course_name, item.cost, item.teacher.name)
+    for index, item in enumerate(student_obj.course_list, 1):
+        print(index, item.course_name, item.cost, item.teacher.name)
 
 
 def course_select(student_obj):
@@ -60,6 +60,23 @@ def course_select(student_obj):
     print("选课成功")
 
 
+def have_class(student_obj):
+    """
+    上课签到功能
+    :param student_obj:
+    :return:
+    """
+    course_info(student_obj)
+
+    index = input("请输入上课签到的课程序号：")
+    obj = student_obj.course_list[int(index)-1]
+    obj.have_class()
+
+    print("课程【%s】已签到" % obj.course_name)
+
+
+
+
 def login(user, pwd):
     """
     学生登录
@@ -78,7 +95,7 @@ def login(user, pwd):
                 if select == "1":
                     course_select(student_obj)
                 elif select == "2":
-                    pass
+                    have_class(student_obj)
                 elif select == "3":
                     course_info(student_obj)
                 else:

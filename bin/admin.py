@@ -45,9 +45,6 @@ def create_course(admin_obj):
     :param admin:
     :return:
     """
-    # course_list = []
-    # while True:
-    #     course_name = input("请输入课程名：")
     path = os.path.join(settings.TEACHERS_DB_PATH, "teacher_list")
     teacher_list = pickle.load(open(path, "rb"))
     for index, item in enumerate(teacher_list, 1):
@@ -60,10 +57,10 @@ def create_course(admin_obj):
             break
         course_name = input("请输入课程名称：")
         course_cost = input("请输入课时费用：")
-        obj = core.Course(course_name, course_cost, teacher_list[int(teacher_index)-1], admin_obj)
+        obj = core.Course(course_name, course_cost, teacher_list[int(teacher_index) - 1], admin_obj)
         course_list.append(obj)
 
-    # 如果文件已经存在，则把原文件添加到新添加的teacher_list中，并重新写入
+    # 如果文件已经存在，则把原文件添加到新添加的course_list中，并重新写入
     path = os.path.join(settings.COURSES_DB_PATH, "course_list")
     if os.path.exists(path):
         exists_list = pickle.load(open(path, "rb"))
@@ -71,6 +68,29 @@ def create_course(admin_obj):
     pickle.dump(course_list, open(path, "wb"))
     print("添加成功")
 
+
+def course_info():
+    """
+    查看所有选课信息
+    :param student_obj:
+    :return:
+    """
+    path = os.path.join(settings.COURSES_DB_PATH, "course_list")
+    course_list = pickle.load(open(path, "rb"))
+    for index, item in enumerate(course_list, 1):
+        print(index, item.course_name, item.cost, item.teacher.name)
+
+
+def teacher_info():
+    """
+        查看所有教师信息
+        :param student_obj:
+        :return:
+        """
+    path = os.path.join(settings.TEACHERS_DB_PATH, "teacher_list")
+    teacher_list = pickle.load(open(path, "rb"))
+    for index, item in enumerate(teacher_list, 1):
+        print(index, item.name, item.age, item.check(), item.create_admin.username, item.create_time)
 
 
 def login(user, pwd):
@@ -87,11 +107,15 @@ def login(user, pwd):
         if admin_obj.login(user, pwd):
             print("登录成功")
             while True:
-                select = input("1.创建教师；2.添加课程；q.退出\n>>>")
+                select = input("1.创建教师；2.添加课程；3.查看教师；4.查看课程q.退出\n>>>")
                 if select == "1":
                     create_teacher(admin_obj)
                 elif select == "2":
                     create_course(admin_obj)
+                elif select == "3":
+                    teacher_info()
+                elif select == "4":
+                    course_info()
                 else:
                     break
         else:
